@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+.font-dmsans {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+}
+.font-literata {
+  font-family: "Literata", sans-serif;
+  font-optical-sizing: auto;
+}

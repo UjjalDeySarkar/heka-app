@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RfhekaApplication<rfheka>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.rfheka.rfheka.RfhekaApplication",
+            "projectName": "rfheka",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
