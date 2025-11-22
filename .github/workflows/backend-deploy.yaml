@@ -1,0 +1,91 @@
+name: Backend CI/CD (rfheka)
+
+on:
+  push:
+    paths:
+      - 'rfheka/**'
+
+permissions:
+  contents: read
+
+env:
+  REMOTE_DIR: ${{ secrets.REMOTE_APP_DIR }}
+  DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+  DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+  DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  APP_NAME: backend
+  BACKEND_PORT: 8080
+  JAR_TARGET: rfheka/target/*.jar
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Spring Boot (maven)
+        # using mvnw if present; falls back to mvn if not
+        run: |
+          if [ -f rfheka/mvnw ]; then
+            chmod +x rfheka/mvnw
+            ./rfheka/mvnw -f rfheka clean package -DskipTests
+          else
+            mvn -f rfheka clean package -DskipTests
+          fi
+
+      - name: Create remote directories
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ env.DEPLOY_HOST }}
+          username: ${{ env.DEPLOY_USER }}
+          port: ${{ env.DEPLOY_PORT }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p "${{ env.REMOTE_DIR }}/backend"
+            chmod -R 755 "${{ env.REMOTE_DIR }}/backend"
+
+      - name: Copy JAR to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ env.DEPLOY_HOST }}
+          username: ${{ env.DEPLOY_USER }}
+          port: ${{ env.DEPLOY_PORT }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
+          # copy the produced jar to remote backend dir as app.jar
+          source: "rfheka/target/*.jar"
+          target: "${{ env.REMOTE_DIR }}/backend/"
+
+      - name: Start/Restart backend with PM2
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ env.DEPLOY_HOST }}
+          username: ${{ env.DEPLOY_USER }}
+          port: ${{ env.DEPLOY_PORT }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
+          script: |
+            cd "${{ env.REMOTE_DIR }}/backend"
+            # find latest jar and rename to app.jar
+            LATEST_JAR=$(ls -t *.jar | head -n1)
+            if [ -z "$LATEST_JAR" ]; then
+              echo "No jar found!"
+              exit 1
+            fi
+            mv -f "$LATEST_JAR" app.jar
+            # stop existing pm2 process if present
+            pm2 delete "${{ env.APP_NAME }}" || true
+            # start backend via java binary managed by pm2 (pass -jar app.jar)
+            # make sure /usr/bin/java path is correct on your server; adjust if needed
+            pm2 start /usr/bin/java --name "${{ env.APP_NAME }}" -- -jar app.jar
+            # optionally set env var for port (if Spring picks SERVER_PORT env)
+            # pm2 restart "${{ env.APP_NAME }}" --update-env
+            pm2 save
