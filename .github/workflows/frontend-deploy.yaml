@@ -20,6 +20,7 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,9 +62,9 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ env.DEPLOY_PORT }}" -o StrictHostKeyChecking=no \
             "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_HOST }}" <<SSH_CMDS
-            set -e
-            cd "${{ env.REMOTE_DIR }}/frontend"
-            pm2 delete "${{ env.APP_NAME }}" || true
-            pm2 serve build ${{ env.PORT }} --name "${{ env.APP_NAME }}" --spa
-            pm2 save
+set -e
+cd "${{ env.REMOTE_DIR }}/frontend"
+pm2 delete "${{ env.APP_NAME }}" || true
+pm2 serve build ${{ env.PORT }} --name "${{ env.APP_NAME }}" --spa
+pm2 save
 SSH_CMDS
