@@ -23,6 +23,7 @@ import Register from "./pages/Register"
 
 import Footer from './components/Footer'
 import ForgotPassword from './pages/ForgotPassword'
+import Privacy from './pages/Privacy'
 function App() {
 // localStorage.removeItem("preloaderShown")
     return (
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/privacy" element={<Privacy />} />
             </Routes>
             <Footer/>
         </>
