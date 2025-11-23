@@ -1,4 +1,4 @@
-name: Frontend CI/CD (Frontend folder)
+name: Frontend CI/CD
 
 on:
   push:
@@ -61,10 +61,5 @@ jobs:
       - name: Start/Restart with PM2 (Frontend)
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ env.DEPLOY_PORT }}" -o StrictHostKeyChecking=no \
-            "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_HOST }}" <<SSH_CMDS
-set -e
-cd "${{ env.REMOTE_DIR }}/frontend"
-pm2 delete "${{ env.APP_NAME }}" || true
-pm2 serve build ${{ env.PORT }} --name "${{ env.APP_NAME }}" --spa
-pm2 save
-SSH_CMDS
+            "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_HOST }}" \
+            "bash -lc 'set -e; cd \"${{ env.REMOTE_DIR }}/frontend\"; pm2 delete \"${{ env.APP_NAME }}\" || true; pm2 serve build ${{ env.PORT }} --name \"${{ env.APP_NAME }}\" --spa; pm2 save'"
