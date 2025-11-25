@@ -54,5 +54,5 @@ jobs:
             pm2 delete rfheka || true
             # Start the jar. Use nohup style via pm2:
             # Approach: start a command that runs `java -jar /opt/apps/rfheka/app.jar`
-            pm2 start --name rfheka --no-autorestart --interpreter bash -- "java -jar /opt/apps/rfheka/app.jar"
+            pm2 restart backend || pm2 start --name backend -- java -jar /opt/apps/rfheka/app.jar --server.port=8080
             pm2 save
