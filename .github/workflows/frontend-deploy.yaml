@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || '22' }}
-          source: "Frontend/build/*"
+          source: "Frontend/dist/*"
           target: "/opt/apps/frontend/"
 
       - name: Start/Restart frontend with pm2 (port 5000)
