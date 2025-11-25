@@ -52,6 +52,6 @@ jobs:
             pm2 stop frontend || true
             pm2 delete frontend || true
             # Use pm2 to serve static build
-            pm2 start --name frontend --no-autorestart --interpreter bash -- "pm2 serve /opt/apps/frontend/Frontend 5000 --spa"
+            pm2 restart frontend || pm2 start npx --name frontend -- serve -s /opt/apps/frontend/Frontend -l 5000
             # save pm2 list so it will resurrect
             pm2 save
