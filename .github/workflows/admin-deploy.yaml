@@ -1,75 +1,50 @@
-name: Admin CI/CD (care-nexus-studio)
+name: Deploy Admin Panel (care-nexus-studio)
 
 on:
   push:
     paths:
       - 'care-nexus-studio/**'
 
-permissions:
-  contents: read
-
-env:
-  REMOTE_DIR: ${{ secrets.REMOTE_APP_DIR }}
-  DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-  DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-  DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
-  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-  APP_NAME: admin
-  PORT: 5001
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install dependencies (admin)
+      - name: Install dependencies
         working-directory: care-nexus-studio
-        run: |
-          npm ci
+        run: npm ci
 
-      - name: Build (admin)
+      - name: Build
         working-directory: care-nexus-studio
-        run: |
-          npm run build
-
-      - name: Create remote directories
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ env.DEPLOY_HOST }}
-          username: ${{ env.DEPLOY_USER }}
-          port: ${{ env.DEPLOY_PORT }}
-          key: ${{ env.SSH_PRIVATE_KEY }}
-          script: |
-            mkdir -p "${{ env.REMOTE_DIR }}/admin"
-            chmod -R 755 "${{ env.REMOTE_DIR }}/admin"
+        run: npm run build
 
       - name: Copy build to server
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v0.1.5
         with:
-          host: ${{ env.DEPLOY_HOST }}
-          username: ${{ env.DEPLOY_USER }}
-          port: ${{ env.DEPLOY_PORT }}
-          key: ${{ env.SSH_PRIVATE_KEY }}
-          source: "care-nexus-studio/build/"
-          target: "${{ env.REMOTE_DIR }}/admin/"
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          source: "care-nexus-studio/build/*"
+          target: "/opt/apps/care-nexus-studio/"
 
-      - name: Start/Restart with PM2 (admin)
+      - name: Start/Restart admin panel with pm2 (port 5001)
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ env.DEPLOY_HOST }}
-          username: ${{ env.DEPLOY_USER }}
-          port: ${{ env.DEPLOY_PORT }}
-          key: ${{ env.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
           script: |
-            cd "${{ env.REMOTE_DIR }}/admin"
-            pm2 delete "${{ env.APP_NAME }}" || true
-            pm2 serve build ${{ env.PORT }} --name "${{ env.APP_NAME }}" --spa
+            pm2 stop admin-panel || true
+            pm2 delete admin-panel || true
+            pm2 start --name admin-panel --no-autorestart --interpreter bash -- "pm2 serve /opt/apps/care-nexus-studio 5001 --spa"
             pm2 save

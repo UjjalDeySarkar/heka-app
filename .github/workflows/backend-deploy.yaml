@@ -1,91 +1,58 @@
-name: Backend CI/CD (rfheka)
+name: Deploy Backend (rfheka)
 
 on:
   push:
     paths:
       - 'rfheka/**'
 
-permissions:
-  contents: read
-
-env:
-  REMOTE_DIR: ${{ secrets.REMOTE_APP_DIR }}
-  DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-  DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-  DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
-  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-  APP_NAME: backend
-  BACKEND_PORT: 8080
-  JAR_TARGET: rfheka/target/*.jar
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set up JDK 17
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 11
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'
 
-      - name: Build Spring Boot (maven)
-        # using mvnw if present; falls back to mvn if not
+      - name: Build with Maven
+        working-directory: rfheka
+        run: mvn -B clean package -DskipTests
+
+      - name: Find built jar
+        id: findjar
         run: |
-          if [ -f rfheka/mvnw ]; then
-            chmod +x rfheka/mvnw
-            ./rfheka/mvnw -f rfheka clean package -DskipTests
-          else
-            mvn -f rfheka clean package -DskipTests
-          fi
+          ls -lah rfheka/target
+          # pick the first *-SNAPSHOT.jar or *.jar in target
+          JAR=$(ls rfheka/target/*.jar | grep -v 'sources\|javadoc' | head -n1 || true)
+          echo "jar_path=$JAR" >> $GITHUB_OUTPUT
 
-      - name: Create remote directories
+      - name: Copy jar to server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          source: ${{ steps.findjar.outputs.jar_path }}
+          target: "/opt/apps/rfheka/app.jar"
+
+      - name: Start/Restart backend with pm2 (port 8080)
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ env.DEPLOY_HOST }}
-          username: ${{ env.DEPLOY_USER }}
-          port: ${{ env.DEPLOY_PORT }}
-          key: ${{ env.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
           script: |
-            mkdir -p "${{ env.REMOTE_DIR }}/backend"
-            chmod -R 755 "${{ env.REMOTE_DIR }}/backend"
-
-      - name: Copy JAR to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ env.DEPLOY_HOST }}
-          username: ${{ env.DEPLOY_USER }}
-          port: ${{ env.DEPLOY_PORT }}
-          key: ${{ env.SSH_PRIVATE_KEY }}
-          # copy the produced jar to remote backend dir as app.jar
-          source: "rfheka/target/*.jar"
-          target: "${{ env.REMOTE_DIR }}/backend/"
-
-      - name: Start/Restart backend with PM2
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ env.DEPLOY_HOST }}
-          username: ${{ env.DEPLOY_USER }}
-          port: ${{ env.DEPLOY_PORT }}
-          key: ${{ env.SSH_PRIVATE_KEY }}
-          script: |
-            cd "${{ env.REMOTE_DIR }}/backend"
-            # find latest jar and rename to app.jar
-            LATEST_JAR=$(ls -t *.jar | head -n1)
-            if [ -z "$LATEST_JAR" ]; then
-              echo "No jar found!"
-              exit 1
-            fi
-            mv -f "$LATEST_JAR" app.jar
-            # stop existing pm2 process if present
-            pm2 delete "${{ env.APP_NAME }}" || true
-            # start backend via java binary managed by pm2 (pass -jar app.jar)
-            # make sure /usr/bin/java path is correct on your server; adjust if needed
-            pm2 start /usr/bin/java --name "${{ env.APP_NAME }}" -- -jar app.jar
-            # optionally set env var for port (if Spring picks SERVER_PORT env)
-            # pm2 restart "${{ env.APP_NAME }}" --update-env
+            # stop previous
+            pm2 stop rfheka || true
+            pm2 delete rfheka || true
+            # Start the jar. Use nohup style via pm2:
+            # Approach: start a command that runs `java -jar /opt/apps/rfheka/app.jar`
+            pm2 start --name rfheka --no-autorestart --interpreter bash -- "java -jar /opt/apps/rfheka/app.jar"
             pm2 save

@@ -1,65 +1,57 @@
-name: Frontend CI/CD
+name: Deploy Frontend (Frontend)
 
 on:
   push:
     paths:
       - 'Frontend/**'
 
-permissions:
-  contents: read
-
-env:
-  REMOTE_DIR: ${{ secrets.REMOTE_APP_DIR }}
-  DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-  DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-  DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
-  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-  APP_NAME: frontend
-  PORT: 5000
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install dependencies (Frontend)
+      - name: Install dependencies
         working-directory: Frontend
         run: npm ci
 
-      - name: Build (Frontend)
+      - name: Build
         working-directory: Frontend
         run: npm run build
 
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${{ env.DEPLOY_PORT }}" -H "${{ env.DEPLOY_HOST }}" >> ~/.ssh/known_hosts || true
-
-      - name: Create remote directories
-        run: |
-          ssh -i ~/.ssh/deploy_key -p "${{ env.DEPLOY_PORT }}" -o StrictHostKeyChecking=no \
-            "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_HOST }}" \
-            "mkdir -p '${{ env.REMOTE_DIR }}/frontend' && chmod -R 755 '${{ env.REMOTE_DIR }}'"
-
       - name: Copy build to server
-        run: |
-          scp -i ~/.ssh/deploy_key -P "${{ env.DEPLOY_PORT }}" -r Frontend/build/* \
-            "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_HOST }}":"${{ env.REMOTE_DIR }}/frontend/"
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          source: "Frontend/build/*"
+          target: "/opt/apps/frontend/"
 
-      - name: Start/Restart with PM2 (Frontend)
-        run: |
-          ssh -i ~/.ssh/deploy_key -p "${{ env.DEPLOY_PORT }}" -o StrictHostKeyChecking=no \
-            "${{ env.DEPLOY_USER }}"@"${{ env.DEPLOY_HOST }}" \
-            "bash -lc 'set -e; cd \"${{ env.REMOTE_DIR }}/frontend\"; pm2 delete \"${{ env.APP_NAME }}\" || true; pm2 serve build ${{ env.PORT }} --name \"${{ env.APP_NAME }}\" --spa; pm2 save'"
+      - name: Start/Restart frontend with pm2 (port 5000)
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          script: |
+            # ensure pm2 serve is available (pm2 already installed in server setup)
+            # remove old folder & move new build into place is already handled by scp
+            # Start or reload pm2 serve on port 5000
+            # stop existing if exists
+            pm2 describe frontend || true
+            pm2 stop frontend || true
+            pm2 delete frontend || true
+            # Use pm2 to serve static build
+            pm2 start --name frontend --no-autorestart --interpreter bash -- "pm2 serve /opt/apps/frontend 5000 --spa"
+            # save pm2 list so it will resurrect
+            pm2 save
