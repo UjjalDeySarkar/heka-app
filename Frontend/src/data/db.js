@@ -2,86 +2,265 @@ export const db = {
     hospitals: {
         Kolkata: [
             {
-                name: "Manipal Hospitals",
-                address: "Mukundapur",
-                phone: "+91 33 2320 3040",
-                services: ["Emergency", "ICU", "Cardiology", "Neurology"],
-                rating: 4.6,
-                reviews: 2450,
+                name: "Hindustan Health Point (HHP)",
+                address: "2406 Garia Main Road, Kolkata–700084",
+                phone: "033-24359997/99, 9830020834, 9874289444",
+                services: ["Cardiology", "Neurology", "Surgery", "Pediatrics", "General Medicine"],
+                rating: "",
+                reviews: "",
                 hours: "24/7",
-                image: "https://via.placeholder.com/80x80?text=Apollo",
+                image: "",
             },
             {
-                name: "Narayana Hospitals",
-                address: "Mukundapur",
-                phone: "+91 33 6606 3800",
-                services: ["Surgery", "Orthopedics", "Oncology"],
-                rating: 4.4,
-                reviews: 1900,
+                name: "N. G. Medicare",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
                 hours: "24/7",
-                image: "https://via.placeholder.com/80x80?text=AMRI",
+                image: "",
             },
             {
-                name: "KPC Medical College & Hospital",
-                address: "Jadavpur",
-                phone: "+91 33 2222 3333",
-                services: ["Cardiology", "Orthopedics", "Neurology", "ICU"],
-                rating: 4.5,
-                reviews: 2100,
+                name: "N. G. Nursinghome",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
                 hours: "24/7",
-                image: "https://via.placeholder.com/80x80?text=Fortis",
+                image: "",
             },
             {
-                name: "Genesis Hospital",
-                address: "Rajdanga Main Road",
-                phone: "+91 33 4040 4040",
-                services: ["General Surgery", "Urology", "Gastroenterology", "Gynaecology"],
-                rating: 4.3,
-                reviews: 1700,
+                name: "Goodace Hospital",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
                 hours: "24/7",
-                image: "https://via.placeholder.com/80x80?text=Ruby",
+                image: "",
             },
             {
-                name: "HCG Cancer Centre",
-                address: "Newtown",
-                phone: "+91 33 2222 1111",
-                services: ["General Medicine", "Orthopedics", "ICU"],
-                rating: 4.2,
-                reviews: 1200,
+                name: "ASG Eye Hospital",
+                address: "403/1 Alcove Gloria, Dakshindari Road, Kolkata",
+                phone: "7603007900",
+                services: ["Cataract", "Glaucoma", "Retina", "Cornea", "LASIK", "Pediatric Ophthalmology"],
+                rating: "",
+                reviews: "",
                 hours: "24/7",
-                image: "https://via.placeholder.com/80x80?text=BelleVue",
+                image: "",
             },
             {
-                name: "Remedy Hospital",
-                address: "Garia",
-                phone: "+91 33 2222 1111",
-                services: ["General Medicine", "Orthopedics", "ICU"],
-                rating: 4.2,
-                reviews: 1200,
+                name: "Behala Balananda Brahmachari Hospital And Research centre",
+                address: "151 & 153, Diamond Harbour Rd, Gholeshapur, Behala, Kolkata, West Bengal 700034",
+                phone: "9674111122",
+                services: [],
+                rating: "",
+                reviews: "",
                 hours: "24/7",
-                image: "https://via.placeholder.com/80x80?text=BelleVue",
+                image: "",
             },
             {
-                name: "ILS Hospital",
-                address: "Saltlake",
-                phone: "+91 33 2222 1111",
-                services: ["General Medicine", "Orthopedics", "ICU"],
-                rating: 4.2,
-                reviews: 1200,
+                name: "AKS Medicare Pvt Ltd",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
                 hours: "24/7",
-                image: "https://via.placeholder.com/80x80?text=BelleVue",
+                image: "",
             },
             {
-                name: "HHP Hospital Pvt Ltd",
-                address: "Garia",
-                phone: "+91 33 2222 1111",
-                services: ["General Medicine", "Orthopedics", "ICU"],
-                rating: 4.2,
-                reviews: 1200,
+                name: "AKS Eye Hospital",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
                 hours: "24/7",
-                image: "https://via.placeholder.com/80x80?text=BelleVue",
+                image: "",
+            },
+            {
+                name: "Netaji Subhas Chandra Bose Cancer Hospital",
+                address: "3081 Nayabad, New Garia, Kolkata",
+                phone: "033-71223000",
+                services: ["Oncology", "Surgical Oncology", "Radiation Medicine", "Urology"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Aurobindo Seva Kendra (EEDF)",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Rabindra Nath Tagore (Narayana Mukundapur)",
+                address: "Mukundapur, Kolkata",
+                phone: "033-71204000",
+                services: ["Cardiac Sciences", "Oncology", "Orthopedics", "Neurology", "Critical Care"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "KPC Hospital",
+                address: "20, Raja Subodh Chandra Mallick Rd, Jadavpur, Kolkata, West Bengal 700032",
+                phone: "0336621-1700 / 0334044-9700",
+                services: [
+                    "Hematology & Infectious Disease",
+                    "Paediatrics",
+                    "General Surgery & Urology",
+                    "Orthopaedics",
+                    "Obstetrics & Gynaecology",
+                    "Endocrinology",
+                    "Oncology"
+                ],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Renaissance",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Jagannath Gupta Institute of Medical Science",
+                address: "Budge Budge, Buita, Kolkata-700137",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Netrapedia Eye Hospital",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Phoenix Hospital",
+                address: "",
+                phone: "",
+                services: [],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospital Saltlake",
+                address: "",
+                phone: "",
+                services: ["Multispecialty"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospital Mukundapur",
+                address: "Kolkata",
+                phone: "033-69070001",
+                services: ["Multispecialty", "Oncology", "Surgery", "Critical Care"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospital EM Bypass",
+                address: "",
+                phone: "",
+                services: ["Multispecialty"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospital Dhakuria",
+                address: "",
+                phone: "",
+                services: ["Multispecialty"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospitals Broadway",
+                address: "",
+                phone: "",
+                services: ["Multispecialty"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospital Yeswanthpur",
+                address: "",
+                phone: "",
+                services: ["Multispecialty"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospital Bangalore",
+                address: "",
+                phone: "",
+                services: ["Multispecialty"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospital Yeshwanthpur",
+                address: "",
+                phone: "",
+                services: ["Multispecialty"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
+            },
+            {
+                name: "Manipal Hospital Whitefield",
+                address: "",
+                phone: "",
+                services: ["Multispecialty"],
+                rating: "",
+                reviews: "",
+                hours: "24/7",
+                image: "",
             },
         ],
+
         Delhi: [
             {
                 name: "AIIMS Delhi",
@@ -373,343 +552,343 @@ export const db = {
     },
 
     ambulances: {
-    Kolkata: [
-        {
-            name: "Apollo Ambulance Service",
-            location: "Kolkata Central",
-            phone: "+91 33 4000 1234",
-            services: ["Basic Life Support", "ICU Ambulance"],
-            type: "Van",
-            hours: "24/7",
-            status: "Available",
-            responseTime: "10-15 min",
-            rating: 4.8,
-            image: "https://via.placeholder.com/80x80?text=Apollo"
-        },
-        {
-            name: "City Ambulance",
-            location: "Salt Lake City, Kolkata",
-            phone: "+91 33 4000 5678",
-            services: ["Emergency", "Neonatal Transport"],
-            type: "SUV",
-            hours: "24/7",
-            status: "Busy",
-            responseTime: "15-20 min",
-            rating: 4.6,
-            image: "https://via.placeholder.com/80x80?text=City"
-        },
-        {
-            name: "Medicare Ambulance",
-            location: "Park Street, Kolkata",
-            phone: "+91 33 4000 9101",
-            services: ["BLS", "Advanced Life Support", "Wheelchair Transport"],
-            type: "Van",
-            hours: "24/7",
-            status: "Available",
-            responseTime: "12-18 min",
-            rating: 4.7,
-            image: "https://via.placeholder.com/80x80?text=Medicare"
-        }
-    ],
-    Delhi: [
-        {
-            name: "AIIMS Ambulance",
-            location: "New Delhi",
-            phone: "+91 11 2658 1234",
-            services: ["Emergency", "ICU Transport"],
-            type: "SUV",
-            hours: "24/7",
-            status: "Available",
-            responseTime: "8-12 min",
-            rating: 4.9,
-            image: "https://via.placeholder.com/80x80?text=AIIMS"
-        },
-        {
-            name: "Delhi Emergency Ambulance",
-            location: "Connaught Place, Delhi",
-            phone: "+91 11 2658 5678",
-            services: ["BLS", "ALS", "Neonatal Transport"],
-            type: "Van",
-            hours: "24/7",
-            status: "Busy",
-            responseTime: "10-15 min",
-            rating: 4.5,
-            image: "https://via.placeholder.com/80x80?text=Delhi+Emergency"
-        }
-    ],
-    Mumbai: [
-        {
-            name: "Lilavati Ambulance Service",
-            location: "Bandra, Mumbai",
-            phone: "+91 22 2656 1234",
-            services: ["BLS", "ALS"],
-            type: "Van",
-            hours: "24/7",
-            status: "Available",
-            responseTime: "10-12 min",
-            rating: 4.8,
-            image: "https://via.placeholder.com/80x80?text=Lilavati"
-        },
-        {
-            name: "Bombay Hospital Ambulance",
-            location: "Marine Lines, Mumbai",
-            phone: "+91 22 2656 5678",
-            services: ["ICU Ambulance", "Emergency Transport", "Neonatal Transport"],
-            type: "SUV",
-            hours: "24/7",
-            status: "Busy",
-            responseTime: "15-20 min",
-            rating: 4.6,
-            image: "https://via.placeholder.com/80x80?text=Bombay+Hospital"
-        }
-    ]
-},
+        Kolkata: [
+            {
+                name: "Apollo Ambulance Service",
+                location: "Kolkata Central",
+                phone: "+91 33 4000 1234",
+                services: ["Basic Life Support", "ICU Ambulance"],
+                type: "Van",
+                hours: "24/7",
+                status: "Available",
+                responseTime: "10-15 min",
+                rating: 4.8,
+                image: "https://via.placeholder.com/80x80?text=Apollo"
+            },
+            {
+                name: "City Ambulance",
+                location: "Salt Lake City, Kolkata",
+                phone: "+91 33 4000 5678",
+                services: ["Emergency", "Neonatal Transport"],
+                type: "SUV",
+                hours: "24/7",
+                status: "Busy",
+                responseTime: "15-20 min",
+                rating: 4.6,
+                image: "https://via.placeholder.com/80x80?text=City"
+            },
+            {
+                name: "Medicare Ambulance",
+                location: "Park Street, Kolkata",
+                phone: "+91 33 4000 9101",
+                services: ["BLS", "Advanced Life Support", "Wheelchair Transport"],
+                type: "Van",
+                hours: "24/7",
+                status: "Available",
+                responseTime: "12-18 min",
+                rating: 4.7,
+                image: "https://via.placeholder.com/80x80?text=Medicare"
+            }
+        ],
+        Delhi: [
+            {
+                name: "AIIMS Ambulance",
+                location: "New Delhi",
+                phone: "+91 11 2658 1234",
+                services: ["Emergency", "ICU Transport"],
+                type: "SUV",
+                hours: "24/7",
+                status: "Available",
+                responseTime: "8-12 min",
+                rating: 4.9,
+                image: "https://via.placeholder.com/80x80?text=AIIMS"
+            },
+            {
+                name: "Delhi Emergency Ambulance",
+                location: "Connaught Place, Delhi",
+                phone: "+91 11 2658 5678",
+                services: ["BLS", "ALS", "Neonatal Transport"],
+                type: "Van",
+                hours: "24/7",
+                status: "Busy",
+                responseTime: "10-15 min",
+                rating: 4.5,
+                image: "https://via.placeholder.com/80x80?text=Delhi+Emergency"
+            }
+        ],
+        Mumbai: [
+            {
+                name: "Lilavati Ambulance Service",
+                location: "Bandra, Mumbai",
+                phone: "+91 22 2656 1234",
+                services: ["BLS", "ALS"],
+                type: "Van",
+                hours: "24/7",
+                status: "Available",
+                responseTime: "10-12 min",
+                rating: 4.8,
+                image: "https://via.placeholder.com/80x80?text=Lilavati"
+            },
+            {
+                name: "Bombay Hospital Ambulance",
+                location: "Marine Lines, Mumbai",
+                phone: "+91 22 2656 5678",
+                services: ["ICU Ambulance", "Emergency Transport", "Neonatal Transport"],
+                type: "SUV",
+                hours: "24/7",
+                status: "Busy",
+                responseTime: "15-20 min",
+                rating: 4.6,
+                image: "https://via.placeholder.com/80x80?text=Bombay+Hospital"
+            }
+        ]
+    },
 
     emergencyServices: {
-    Kolkata: [
-        {
-            name: "Medical Oxygen Cylinder",
-            address: "Park Street, Kolkata",
-            reviews: 120,
-            services: ["Fire Response", "Medical Emergency", "Accident Assistance"],
-            hours: "7am to 10pm",
-            status: "Available",
-            phone: "+91 33 4000 5555",
-            responseTime: "30min",
-            rating: 4.8,
-            image: "https://via.placeholder.com/80x80?text=CityER"
-        },
-        {
-            name: "Urinary Catheters",
-            address: "Salt Lake City, Kolkata",
-            reviews: 95,
-            services: ["Ambulance Service", "Trauma Care", "Disaster Response"],
-            hours: "7am to 10pm",
-            status: "Busy",
-            phone: "+91 33 4000 7777",
-            responseTime: "30min",
-            rating: 4.6,
-            image: "https://via.placeholder.com/80x80?text=RapidRescue"
-        },
-        {
-            name: "Nebuliser Machine",
-            address: "Ballygunge, Kolkata",
-            reviews: 80,
-            services: ["Fire Safety", "Medical Evacuation", "Disaster Relief"],
-            hours: "7am to 10pm",
-            status: "Available",
-            phone: "+91 33 4000 8888",
-            responseTime: "30min",
-            rating: 4.7,
-            image: "https://via.placeholder.com/80x80?text=MedCare"
-        },
-        {
-            name: "BiPAP Machine",
-            address: "Ballygunge, Kolkata",
-            reviews: 80,
-            services: ["Fire Safety", "Medical Evacuation", "Disaster Relief"],
-            hours: "7am to 10pm",
-            status: "Available",
-            phone: "+91 33 4000 8888",
-            responseTime: "30min",
-            rating: 4.7,
-            image: "https://via.placeholder.com/80x80?text=MedCare"
-        },
-        {
-            name: "Rice Tube",
-            address: "Ballygunge, Kolkata",
-            reviews: 80,
-            services: ["Fire Safety", "Medical Evacuation", "Disaster Relief"],
-            hours: "7am to 10pm",
-            status: "Available",
-            phone: "+91 33 4000 8888",
-            responseTime: "30min",
-            rating: 4.7,
-            image: "https://via.placeholder.com/80x80?text=MedCare"
-        },
-        {
-            name: "Saline",
-            address: "Ballygunge, Kolkata",
-            reviews: 80,
-            services: ["Fire Safety", "Medical Evacuation", "Disaster Relief"],
-            hours: "7am to 10pm",
-            status: "Available",
-            phone: "+91 33 4000 8888",
-            responseTime: "30min",
-            rating: 4.7,
-            image: "https://via.placeholder.com/80x80?text=MedCare"
-        }
-    ],
-    Delhi: [
-        {
-            name: "Delhi Emergency Services",
-            address: "Connaught Place, New Delhi",
-            reviews: 150,
-            services: ["Fire Response", "Medical Assistance", "Police Support"],
-            hours: "24/7",
-            status: "Available",
-            phone: "+91 11 2658 9999",
-            responseTime: "8-12 min",
-            rating: 4.9,
-            image: "https://via.placeholder.com/80x80?text=DelhiER"
-        },
-        {
-            name: "Rapid Rescue Delhi",
-            address: "Saket, New Delhi",
-            reviews: 130,
-            services: ["Ambulance Service", "Trauma Care", "Evacuation Support"],
-            hours: "24/7",
-            status: "Busy",
-            phone: "+91 11 2658 8888",
-            responseTime: "10-15 min",
-            rating: 4.7,
-            image: "https://via.placeholder.com/80x80?text=RapidDelhi"
-        }
-    ],
-    Mumbai: [
-        {
-            name: "Mumbai Rapid Response",
-            address: "Bandra West, Mumbai",
-            reviews: 130,
-            services: ["Ambulance Service", "Accident Assistance", "Disaster Relief"],
-            hours: "24/7",
-            status: "Available",
-            phone: "+91 22 2656 1111",
-            responseTime: "10-12 min",
-            rating: 4.8,
-            image: "https://via.placeholder.com/80x80?text=MumbaiRR"
-        },
-        {
-            name: "City Emergency Mumbai",
-            address: "Andheri East, Mumbai",
-            reviews: 110,
-            services: ["Fire Safety", "Medical Emergencies", "Evacuation Support"],
-            hours: "24/7",
-            status: "Busy",
-            phone: "+91 22 2656 2222",
-            responseTime: "12-18 min",
-            rating: 4.6,
-            image: "https://via.placeholder.com/80x80?text=CityER"
-        },
-        {
-            name: "Medicare Rapid Response",
-            address: "Marine Lines, Mumbai",
-            reviews: 100,
-            services: ["Disaster Response", "Medical Assistance", "Accident Support"],
-            hours: "24/7",
-            status: "Available",
-            phone: "+91 22 2656 3333",
-            responseTime: "15 min",
-            rating: 4.7,
-            image: "https://via.placeholder.com/80x80?text=Medicare"
-        }
-    ]
-},
+        Kolkata: [
+            {
+                name: "Medical Oxygen Cylinder",
+                address: "Park Street, Kolkata",
+                reviews: 120,
+                services: ["Fire Response", "Medical Emergency", "Accident Assistance"],
+                hours: "7am to 10pm",
+                status: "Available",
+                phone: "+91 33 4000 5555",
+                responseTime: "30min",
+                rating: 4.8,
+                image: "https://via.placeholder.com/80x80?text=CityER"
+            },
+            {
+                name: "Urinary Catheters",
+                address: "Salt Lake City, Kolkata",
+                reviews: 95,
+                services: ["Ambulance Service", "Trauma Care", "Disaster Response"],
+                hours: "7am to 10pm",
+                status: "Busy",
+                phone: "+91 33 4000 7777",
+                responseTime: "30min",
+                rating: 4.6,
+                image: "https://via.placeholder.com/80x80?text=RapidRescue"
+            },
+            {
+                name: "Nebuliser Machine",
+                address: "Ballygunge, Kolkata",
+                reviews: 80,
+                services: ["Fire Safety", "Medical Evacuation", "Disaster Relief"],
+                hours: "7am to 10pm",
+                status: "Available",
+                phone: "+91 33 4000 8888",
+                responseTime: "30min",
+                rating: 4.7,
+                image: "https://via.placeholder.com/80x80?text=MedCare"
+            },
+            {
+                name: "BiPAP Machine",
+                address: "Ballygunge, Kolkata",
+                reviews: 80,
+                services: ["Fire Safety", "Medical Evacuation", "Disaster Relief"],
+                hours: "7am to 10pm",
+                status: "Available",
+                phone: "+91 33 4000 8888",
+                responseTime: "30min",
+                rating: 4.7,
+                image: "https://via.placeholder.com/80x80?text=MedCare"
+            },
+            {
+                name: "Rice Tube",
+                address: "Ballygunge, Kolkata",
+                reviews: 80,
+                services: ["Fire Safety", "Medical Evacuation", "Disaster Relief"],
+                hours: "7am to 10pm",
+                status: "Available",
+                phone: "+91 33 4000 8888",
+                responseTime: "30min",
+                rating: 4.7,
+                image: "https://via.placeholder.com/80x80?text=MedCare"
+            },
+            {
+                name: "Saline",
+                address: "Ballygunge, Kolkata",
+                reviews: 80,
+                services: ["Fire Safety", "Medical Evacuation", "Disaster Relief"],
+                hours: "7am to 10pm",
+                status: "Available",
+                phone: "+91 33 4000 8888",
+                responseTime: "30min",
+                rating: 4.7,
+                image: "https://via.placeholder.com/80x80?text=MedCare"
+            }
+        ],
+        Delhi: [
+            {
+                name: "Delhi Emergency Services",
+                address: "Connaught Place, New Delhi",
+                reviews: 150,
+                services: ["Fire Response", "Medical Assistance", "Police Support"],
+                hours: "24/7",
+                status: "Available",
+                phone: "+91 11 2658 9999",
+                responseTime: "8-12 min",
+                rating: 4.9,
+                image: "https://via.placeholder.com/80x80?text=DelhiER"
+            },
+            {
+                name: "Rapid Rescue Delhi",
+                address: "Saket, New Delhi",
+                reviews: 130,
+                services: ["Ambulance Service", "Trauma Care", "Evacuation Support"],
+                hours: "24/7",
+                status: "Busy",
+                phone: "+91 11 2658 8888",
+                responseTime: "10-15 min",
+                rating: 4.7,
+                image: "https://via.placeholder.com/80x80?text=RapidDelhi"
+            }
+        ],
+        Mumbai: [
+            {
+                name: "Mumbai Rapid Response",
+                address: "Bandra West, Mumbai",
+                reviews: 130,
+                services: ["Ambulance Service", "Accident Assistance", "Disaster Relief"],
+                hours: "24/7",
+                status: "Available",
+                phone: "+91 22 2656 1111",
+                responseTime: "10-12 min",
+                rating: 4.8,
+                image: "https://via.placeholder.com/80x80?text=MumbaiRR"
+            },
+            {
+                name: "City Emergency Mumbai",
+                address: "Andheri East, Mumbai",
+                reviews: 110,
+                services: ["Fire Safety", "Medical Emergencies", "Evacuation Support"],
+                hours: "24/7",
+                status: "Busy",
+                phone: "+91 22 2656 2222",
+                responseTime: "12-18 min",
+                rating: 4.6,
+                image: "https://via.placeholder.com/80x80?text=CityER"
+            },
+            {
+                name: "Medicare Rapid Response",
+                address: "Marine Lines, Mumbai",
+                reviews: 100,
+                services: ["Disaster Response", "Medical Assistance", "Accident Support"],
+                hours: "24/7",
+                status: "Available",
+                phone: "+91 22 2656 3333",
+                responseTime: "15 min",
+                rating: 4.7,
+                image: "https://via.placeholder.com/80x80?text=Medicare"
+            }
+        ]
+    },
 
     homeCareServices: {
-    Kolkata: [
-        {
-            name: "Health Care Technician",
-            address: "Park Street, Kolkata",
-            reviews: 80,
-            services: ["Elderly Care", "Household Help", "Personal Assistance","Pressure Checking","Random Sugar Checking"],
-            details: "Certified caregivers available 24/7",
-            image: "https://via.placeholder.com/80x80?text=KolkataPC"
-        },
-        {
-            name: "Trained Female Nurse",
-            address: "Salt Lake City, Kolkata",
-            reviews: 65,
-            services: ["Nursing", "Medical Help"],
-            details: "Experienced nurses for in-home care",
-            image: "https://via.placeholder.com/80x80?text=HomeHealth"
-        },
-        {
-            name: "Trained Male Nurse",
-            address: "Ballygunge, Kolkata",
-            reviews: 70,
-            services: ["Elderly Care", "Medical Assistance", "Housekeeping"],
-            details: "Qualified caregivers with emergency support",
-            image: "https://via.placeholder.com/80x80?text=MedicareHC"
-        },
-        {
-            name: "Physiotherapist",
-            address: "Esplanade, Kolkata",
-            reviews: 60,
-            services: ["Physiotherapy"],
-            details: "Flexible timings and verified staff",
-            image: "https://via.placeholder.com/80x80?text=RapidHC"
-        }
-    ],
-    Delhi: [
-        {
-            name: "Delhi Home Care Services",
-            address: "Connaught Place, New Delhi",
-            reviews: 90,
-            services: ["Elderly Care", "Housekeeping", "Medical Assistance"],
-            details: "Trained staff with flexible timings",
-            image: "https://via.placeholder.com/80x80?text=DelhiHC"
-        },
-        {
-            name: "Max Home Care",
-            address: "Saket, New Delhi",
-            reviews: 75,
-            services: ["Physiotherapy", "Nursing", "Personal Assistance"],
-            details: "Certified professionals with verified background",
-            image: "https://via.placeholder.com/80x80?text=MaxHC"
-        },
-        {
-            name: "Rapid Care Delhi",
-            address: "Dwarka, New Delhi",
-            reviews: 80,
-            services: ["Elderly Care", "Medical Assistance", "Household Help"],
-            details: "Emergency support available 24/7",
-            image: "https://via.placeholder.com/80x80?text=RapidCare"
-        },
-        {
-            name: "SafeHands Home Care",
-            address: "Janakpuri, New Delhi",
-            reviews: 70,
-            services: ["Personal Assistance", "Elderly Care", "Housekeeping"],
-            details: "Trained caregivers for in-home support",
-            image: "https://via.placeholder.com/80x80?text=SafeHands"
-        }
-    ],
-    Mumbai: [
-        {
-            name: "Mumbai Care Experts",
-            address: "Bandra West, Mumbai",
-            reviews: 100,
-            services: ["Personal Care", "Nursing", "Household Help"],
-            details: "24/7 service with emergency support",
-            image: "https://via.placeholder.com/80x80?text=MumbaiCare"
-        },
-        {
-            name: "City Home Care Mumbai",
-            address: "Andheri East, Mumbai",
-            reviews: 75,
-            services: ["Physiotherapy", "Medical Assistance", "Personal Assistance"],
-            details: "Qualified staff with verified background",
-            image: "https://via.placeholder.com/80x80?text=CityHC"
-        },
-        {
-            name: "Rapid Home Care Mumbai",
-            address: "Bandra East, Mumbai",
-            reviews: 85,
-            services: ["Elderly Care", "Housekeeping", "Personal Assistance"],
-            details: "Experienced caregivers for 24/7 support",
-            image: "https://via.placeholder.com/80x80?text=RapidHC"
-        },
-        {
-            name: "Medicare Home Care Mumbai",
-            address: "Chembur, Mumbai",
-            reviews: 70,
-            services: ["Nursing", "Medical Assistance", "Household Help"],
-            details: "Certified professionals for in-home care",
-            image: "https://via.placeholder.com/80x80?text=MedicareHC"
-        }
-    ]
-}
+        Kolkata: [
+            {
+                name: "Health Care Technician",
+                address: "Park Street, Kolkata",
+                reviews: 80,
+                services: ["Elderly Care", "Household Help", "Personal Assistance", "Pressure Checking", "Random Sugar Checking"],
+                details: "Certified caregivers available 24/7",
+                image: "https://via.placeholder.com/80x80?text=KolkataPC"
+            },
+            {
+                name: "Trained Female Nurse",
+                address: "Salt Lake City, Kolkata",
+                reviews: 65,
+                services: ["Nursing", "Medical Help"],
+                details: "Experienced nurses for in-home care",
+                image: "https://via.placeholder.com/80x80?text=HomeHealth"
+            },
+            {
+                name: "Trained Male Nurse",
+                address: "Ballygunge, Kolkata",
+                reviews: 70,
+                services: ["Elderly Care", "Medical Assistance", "Housekeeping"],
+                details: "Qualified caregivers with emergency support",
+                image: "https://via.placeholder.com/80x80?text=MedicareHC"
+            },
+            {
+                name: "Physiotherapist",
+                address: "Esplanade, Kolkata",
+                reviews: 60,
+                services: ["Physiotherapy"],
+                details: "Flexible timings and verified staff",
+                image: "https://via.placeholder.com/80x80?text=RapidHC"
+            }
+        ],
+        Delhi: [
+            {
+                name: "Delhi Home Care Services",
+                address: "Connaught Place, New Delhi",
+                reviews: 90,
+                services: ["Elderly Care", "Housekeeping", "Medical Assistance"],
+                details: "Trained staff with flexible timings",
+                image: "https://via.placeholder.com/80x80?text=DelhiHC"
+            },
+            {
+                name: "Max Home Care",
+                address: "Saket, New Delhi",
+                reviews: 75,
+                services: ["Physiotherapy", "Nursing", "Personal Assistance"],
+                details: "Certified professionals with verified background",
+                image: "https://via.placeholder.com/80x80?text=MaxHC"
+            },
+            {
+                name: "Rapid Care Delhi",
+                address: "Dwarka, New Delhi",
+                reviews: 80,
+                services: ["Elderly Care", "Medical Assistance", "Household Help"],
+                details: "Emergency support available 24/7",
+                image: "https://via.placeholder.com/80x80?text=RapidCare"
+            },
+            {
+                name: "SafeHands Home Care",
+                address: "Janakpuri, New Delhi",
+                reviews: 70,
+                services: ["Personal Assistance", "Elderly Care", "Housekeeping"],
+                details: "Trained caregivers for in-home support",
+                image: "https://via.placeholder.com/80x80?text=SafeHands"
+            }
+        ],
+        Mumbai: [
+            {
+                name: "Mumbai Care Experts",
+                address: "Bandra West, Mumbai",
+                reviews: 100,
+                services: ["Personal Care", "Nursing", "Household Help"],
+                details: "24/7 service with emergency support",
+                image: "https://via.placeholder.com/80x80?text=MumbaiCare"
+            },
+            {
+                name: "City Home Care Mumbai",
+                address: "Andheri East, Mumbai",
+                reviews: 75,
+                services: ["Physiotherapy", "Medical Assistance", "Personal Assistance"],
+                details: "Qualified staff with verified background",
+                image: "https://via.placeholder.com/80x80?text=CityHC"
+            },
+            {
+                name: "Rapid Home Care Mumbai",
+                address: "Bandra East, Mumbai",
+                reviews: 85,
+                services: ["Elderly Care", "Housekeeping", "Personal Assistance"],
+                details: "Experienced caregivers for 24/7 support",
+                image: "https://via.placeholder.com/80x80?text=RapidHC"
+            },
+            {
+                name: "Medicare Home Care Mumbai",
+                address: "Chembur, Mumbai",
+                reviews: 70,
+                services: ["Nursing", "Medical Assistance", "Household Help"],
+                details: "Certified professionals for in-home care",
+                image: "https://via.placeholder.com/80x80?text=MedicareHC"
+            }
+        ]
+    }
 
 
 
