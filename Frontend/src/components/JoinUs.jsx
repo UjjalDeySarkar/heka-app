@@ -16,7 +16,7 @@ import ic3 from "../assets/nurse-female.png"
 const services = [
     { title: "Nursing Asst.", sub: "Female", image: ic3, route: "/choose-city/hospitals" },
     { title: "Nursing Asst.", sub: "Male", image: ic2, route: "/choose-city/hotels" },
-    { title: "Health", sub: "technician", image: ic1, route: "/choose-city/rooms" },
+    { title: "Health", sub: "Technician", image: ic1, route: "/choose-city/rooms" },
 
 ];
 
@@ -36,11 +36,11 @@ export default function JoinUs() {
     const filteredServices = services;
 
     const handleCardClick = (c) => {
-        if (c.isPopup) {
-            setShowPopup(true);
-        } else {
-            navigate(c.route);
-        }
+        const serviceLabel = `${c.title} ${c.sub}`;
+        // navigate with both state and query param so AdmissionForm can pick it up reliably
+        navigate(`/admission-form?service=${encodeURIComponent(serviceLabel)}`, {
+            state: { selectedService: serviceLabel },
+        });
     };
 
     useEffect(() => {
@@ -61,10 +61,12 @@ export default function JoinUs() {
 
                 <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-x-6 px-1 gap-y-5 w-full">
                     {services.map((item, index) => (
-                        <a
-                            href="tel:6289924753"
+                        // changed: use a button-like div and onClick to navigate to the demo admission form
+                        <button
+                            type="button"
                             key={index}
-                            className="flex flex-col gap-2 items-center text-center focus:outline-none active:scale-95 transition-transform duration-150"
+                            onClick={() => handleCardClick(item)}
+                            className="flex flex-col gap-2 items-center text-center focus:outline-none active:scale-95 transition-transform duration-150 bg-transparent"
                         >
                             <div className="bg-[#93D8B1] p-2 rounded-[12px]">
                                 <img
@@ -77,7 +79,7 @@ export default function JoinUs() {
                                 <p>{item.title}</p>
                                 <p>{item.sub}</p>
                             </div>
-                        </a>
+                        </button>
                     ))}
                 </div>
             </div>

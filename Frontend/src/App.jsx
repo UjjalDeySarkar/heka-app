@@ -24,6 +24,8 @@ import Register from "./pages/Register"
 import Footer from './components/Footer'
 import ForgotPassword from './pages/ForgotPassword'
 import Privacy from './pages/Privacy'
+// --- IMPORT YOUR NEW FORM HERE ---
+import AdmissionForm from "./components/AdmissionForm" // Adjust the path if it's in /components or /forms
 function App() {
 // localStorage.removeItem("preloaderShown")
     return (
@@ -53,6 +55,9 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/privacy" element={<Privacy />} />
+
+                {/* --- ADD THIS ROUTE --- */}
+                <Route path="/admission-form" element={<AdmissionForm />} />
             </Routes>
             <Footer/>
         </>
