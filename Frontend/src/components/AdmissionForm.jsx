@@ -7,6 +7,43 @@ const services = [
   "Health Technician",
 ];
 
+const courseTypeMap = {
+  "Nursing Asst. Female": "NURSING_ASST_FEMALE",
+  "Nursing Asst. Male": "NURSING_ASST_MALE",
+  "Health Technician": "HEALTH_TECHNICIAN",
+};
+
+const buildPayload = (form) => ({
+  fullName: form.fullName,
+  email: form.email,
+  courseType: courseTypeMap[form.service],
+  dateOfBirth: form.dob,
+  gender: form.gender,
+  fatherOrMotherName: form.parentName,
+  phoneNumber: form.phone,
+  alternatePhoneNumber: form.altPhone,
+  aadharNumber: form.aadhar,
+  permanentAddress: form.permanentAddress,
+
+  educations: form.education.map((e) => ({
+    degreeOrClass: e.className,
+    institute: e.institute,
+    boardOrUniversity: e.board,
+    passingYear: Number(e.year),
+    marksOrGrade: e.marks,
+    stream: e.stream,
+  })),
+
+  workExperiences: form.experience.map((e) => ({
+    companyName: e.company,
+    designation: e.designation,
+    reportingPerson: e.reportingPerson,
+    reportingContact: e.address || "", // backend expects string
+    jobResponsibilities: e.responsibilities,
+  })),
+});
+
+
 export default function AdmissionForm() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -45,27 +82,55 @@ export default function AdmissionForm() {
     setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
-  const addEducation = () => setForm({...form, education: [...form.education, { id: Date.now(), className: "", institute: "", board: "", year: "", marks: "", stream: "" }]});
-  const removeEducation = (id) => setForm({...form, education: form.education.filter(e => e.id !== id)});
+  const addEducation = () => setForm({ ...form, education: [...form.education, { id: Date.now(), className: "", institute: "", board: "", year: "", marks: "", stream: "" }] });
+  const removeEducation = (id) => setForm({ ...form, education: form.education.filter(e => e.id !== id) });
   const handleEduChange = (id, e) => {
     const { name, value } = e.target;
-    setForm({ ...form, education: form.education.map(item => item.id === id ? { ...item, [name]: value } : item)});
+    setForm({ ...form, education: form.education.map(item => item.id === id ? { ...item, [name]: value } : item) });
   };
 
-  const addExperience = () => setForm({...form, experience: [...form.experience, { id: Date.now(), company: "", address: "", designation: "", reportingPerson: "", responsibilities: "" }]});
-  const removeExperience = (id) => setForm({...form, experience: form.experience.filter(e => e.id !== id)});
+  const addExperience = () => setForm({ ...form, experience: [...form.experience, { id: Date.now(), company: "", address: "", designation: "", reportingPerson: "", responsibilities: "" }] });
+  const removeExperience = (id) => setForm({ ...form, experience: form.experience.filter(e => e.id !== id) });
   const handleExpChange = (id, e) => {
     const { name, value } = e.target;
-    setForm({ ...form, experience: form.experience.map(item => item.id === id ? { ...item, [name]: value } : item)});
+    setForm({ ...form, experience: form.experience.map(item => item.id === id ? { ...item, [name]: value } : item) });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.agreed) return alert("Please accept the Terms & Conditions");
-    console.log("Final Form Submission:", form);
-    alert("Admission Form Submitted Successfully!");
-    navigate("/");
+
+    if (!form.agreed) {
+      alert("Please accept the Terms & Conditions");
+      return;
+    }
+
+    const payload = buildPayload(form);
+
+    try {
+      const res = await fetch("http://localhost:8080/api/students/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err);
+      }
+
+      const data = await res.json();
+      console.log("Registration Success:", data);
+
+      alert("Admission Form Submitted Successfully!");
+      navigate("/");
+    } catch (error) {
+      console.error("Submission Error:", error);
+      alert("Failed to submit form. Please try again.");
+    }
   };
+
 
   // Reusable Professional Styles
   const inputClass = "w-full px-4 py-3 text-sm text-gray-700 bg-white border border-gray-300 rounded-xl outline-none transition-all duration-200 hover:border-[#4B9B6E] focus:border-[#4B9B6E] focus:ring-4 focus:ring-[#4B9B6E]/10 placeholder:text-gray-400";
@@ -77,7 +142,7 @@ export default function AdmissionForm() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] py-12 px-4 font-dmsans">
       <div className="max-w-4xl mx-auto bg-white shadow-[0_20px_50px_rgba(0,0,0,0.05)] rounded-[32px] overflow-hidden border border-gray-100">
-        
+
         {/* Header */}
         <div className="bg-[#4B9B6E] px-8 py-10 text-white text-center relative overflow-hidden">
           <div className="relative z-10">
@@ -88,7 +153,7 @@ export default function AdmissionForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 md:p-12 space-y-12">
-          
+
           {/* Course Selection */}
           <section>
             <h2 className={sectionTitleClass}>
@@ -160,7 +225,7 @@ export default function AdmissionForm() {
               <span className="w-2 h-8 bg-[#4B9B6E] rounded-full mr-3"></span>
               Educational Details
             </h2>
-            
+
             {form.education.map((edu, index) => (
               <div key={edu.id} className={cardClass}>
                 {form.education.length > 1 && (
@@ -194,7 +259,7 @@ export default function AdmissionForm() {
                 </div>
               </div>
             ))}
-            
+
             {/* Add Button Moved to Bottom */}
             <button type="button" onClick={addEducation} className={addButtonClass}>
               <span>+</span> Add Another Qualification
