@@ -1,16 +1,14 @@
 package com.rfheka.rfheka.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -29,4 +27,8 @@ public class User {
 
     private String otp;
     private LocalDateTime otpGeneratedTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
+    private UserType userType = UserType.NORMAL;
 }

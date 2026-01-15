@@ -25,7 +25,7 @@ public class AuthService {
     public ApiResponse register(RegisterRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            return new ApiResponse("Email already registered!", false);
+            return new ApiResponse("Email already registered!", false, null);
         }
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -37,7 +37,7 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
-        return new ApiResponse("User registered successfully!", true);
+        return new ApiResponse("User registered successfully!", true, null);
     }
 
     // Registration already exists
@@ -57,7 +57,7 @@ public class AuthService {
     public ApiResponse forgotPassword(ForgotPasswordRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
         if (userOptional.isEmpty()) {
-            return new ApiResponse("User not found with this email.", false);
+            return new ApiResponse("User not found with this email.", false, null);
         }
 
         User user = userOptional.get();
@@ -68,42 +68,42 @@ public class AuthService {
 
         emailService.sendEmail(user.getEmail(), "Password Reset OTP", "Your OTP is: " + otp);
 
-        return new ApiResponse("OTP sent to your email.", true);
+        return new ApiResponse("OTP sent to your email.", true, null);
     }
 
     public ApiResponse verifyOtp(VerifyOtpRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
         if (userOptional.isEmpty()) {
-            return new ApiResponse("User not found.", false);
+            return new ApiResponse("User not found.", false, null);
         }
 
         User user = userOptional.get();
         if (user.getOtp() == null || !user.getOtp().equals(request.getOtp())) {
-            return new ApiResponse("Invalid OTP.", false);
+            return new ApiResponse("Invalid OTP.", false, null);
         }
 
         if (Duration.between(user.getOtpGeneratedTime(), LocalDateTime.now()).toMinutes() > 5) {
-            return new ApiResponse("OTP has expired.", false);
+            return new ApiResponse("OTP has expired.", false, null);
         }
 
         user.setOtp(null);
         user.setOtpGeneratedTime(null);
         userRepository.save(user);
 
-        return new ApiResponse("OTP verified successfully.", true);
+        return new ApiResponse("OTP verified successfully.", true, null);
     }
 
     public ApiResponse resetPassword(ResetPasswordRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
         if (userOptional.isEmpty()) {
-            return new ApiResponse("User not found.", false);
+            return new ApiResponse("User not found.", false, null);
         }
 
         User user = userOptional.get();
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
 
-        return new ApiResponse("Password reset successfully.", true);
+        return new ApiResponse("Password reset successfully.", true, null);
     }
 
     private String generateOtp() {
