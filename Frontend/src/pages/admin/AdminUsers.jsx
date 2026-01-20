@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const DEFAULT_USER_TYPE = 'NORMAL';
+
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,12 +14,25 @@ const AdminUsers = () => {
     fetchUsers();
   }, []);
 
+  /* ---------------- FETCH USERS ---------------- */
+
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URI}/api/users`);
+      setError(null);
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URI}/api/users`
+      );
+
       if (response.data.success) {
-        setUsers(response.data.data);
+        // 🔒 Normalize userType once (null → NORMAL)
+        const normalizedUsers = response.data.data.map(user => ({
+          ...user,
+          userType: user.userType ?? DEFAULT_USER_TYPE
+        }));
+
+        setUsers(normalizedUsers);
       } else {
         setError('Failed to fetch users');
       }
@@ -29,15 +44,20 @@ const AdminUsers = () => {
     }
   };
 
+  /* ---------------- FILTER USERS ---------------- */
+
   const filteredUsers = users.filter(user => {
-    const matchesSearch = 
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch =
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesType = filterType === 'ALL' || user.userType === filterType;
+
+    const matchesType =
+      filterType === 'ALL' || user.userType === filterType;
 
     return matchesSearch && matchesType;
   });
+
+  /* ---------------- HELPERS ---------------- */
 
   const getInitials = (name) => {
     return name
@@ -60,6 +80,8 @@ const AdminUsers = () => {
         return 'bg-gray-100 text-gray-800';
     }
   };
+
+  /* ---------------- UI ---------------- */
 
   return (
     <div className="space-y-6">
@@ -133,9 +155,6 @@ const AdminUsers = () => {
           </div>
         ) : filteredUsers.length === 0 ? (
           <div className="p-12 text-center text-gray-500">
-            <svg className="mx-auto h-12 w-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
             <p className="mt-4 text-lg font-medium">No users found</p>
             <p className="text-sm">Try adjusting your search or filters.</p>
           </div>
@@ -144,23 +163,14 @@ const AdminUsers = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    User
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Contact Info
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Role
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">User</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Contact Info</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Role</th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
+                  <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
                 </tr>
               </thead>
+
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-50 transition-colors">
@@ -177,25 +187,24 @@ const AdminUsers = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-600 flex items-center gap-2">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        {user.email}
-                      </div>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      {user.email}
                     </td>
+
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getUserTypeColor(user.userType)}`}>
                         {user.userType}
                       </span>
                     </td>
+
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-100">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                         Active
                       </span>
                     </td>
+
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button className="text-[#4B9B6E] hover:text-[#3d825b] mr-3 transition-colors">Edit</button>
                       <button className="text-red-400 hover:text-red-600 transition-colors">Delete</button>
@@ -204,19 +213,6 @@ const AdminUsers = () => {
                 ))}
               </tbody>
             </table>
-          </div>
-        )}
-        
-        {/* Pagination Placeholder - Enterprise apps usually have this */}
-        {!loading && !error && filteredUsers.length > 0 && (
-          <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-            <div className="text-sm text-gray-500">
-              Showing <span className="font-medium">{filteredUsers.length}</span> results
-            </div>
-            <div className="flex gap-2">
-              <button disabled className="px-3 py-1 border border-gray-300 rounded-md bg-white text-gray-400 text-sm cursor-not-allowed">Previous</button>
-              <button disabled className="px-3 py-1 border border-gray-300 rounded-md bg-white text-gray-400 text-sm cursor-not-allowed">Next</button>
-            </div>
           </div>
         )}
       </div>
