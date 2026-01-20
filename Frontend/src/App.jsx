@@ -26,6 +26,14 @@ import ForgotPassword from './pages/ForgotPassword'
 import Privacy from './pages/Privacy'
 // --- IMPORT YOUR NEW FORM HERE ---
 import AdmissionForm from "./components/AdmissionForm" // Adjust the path if it's in /components or /forms
+
+import AdminLayout from "./pages/admin/AdminLayout"
+import AdminDashboard from "./pages/admin/AdminDashboard"
+import AdminUsers from "./pages/admin/AdminUsers"
+import AdminHospitals from "./pages/admin/AdminHospitals"
+import AdminServices from "./pages/admin/AdminServices"
+import AdminSettings from "./pages/admin/AdminSettings"
+
 function App() {
 // localStorage.removeItem("preloaderShown")
     return (
@@ -58,6 +66,15 @@ function App() {
 
                 {/* --- ADD THIS ROUTE --- */}
                 <Route path="/admission-form" element={<AdmissionForm />} />
+
+                {/* Admin Routes */}
+                <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="hospitals" element={<AdminHospitals />} />
+                    <Route path="services" element={<AdminServices />} />
+                    <Route path="settings" element={<AdminSettings />} />
+                </Route>
             </Routes>
             <Footer/>
         </>

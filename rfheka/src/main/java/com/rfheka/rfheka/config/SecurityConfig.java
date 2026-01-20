@@ -26,6 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/homecare/services/**").permitAll() // Public access
                         .requestMatchers("/api/rooms/**").permitAll() // Public access
                         .requestMatchers("/api/students/**").permitAll() // Public access
+                        .requestMatchers("/api/users/**").permitAll() // Public access
                         .anyRequest().authenticated() // Everything else needs auth
                 )
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless API
