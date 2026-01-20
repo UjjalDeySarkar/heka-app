@@ -1,5 +1,5 @@
 import React from "react"
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, useLocation } from "react-router-dom"
 import Home from "./pages/Home"
 import ChooseCity from "./pages/ChooseCity"
 import FindHospitals from "./pages/FindHospitals"
@@ -35,6 +35,9 @@ import AdminServices from "./pages/admin/AdminServices"
 import AdminSettings from "./pages/admin/AdminSettings"
 
 function App() {
+    const location = useLocation();
+    const isAdminRoute = location.pathname.startsWith('/admin');
+
 // localStorage.removeItem("preloaderShown")
     return (
         <>
@@ -76,7 +79,7 @@ function App() {
                     <Route path="settings" element={<AdminSettings />} />
                 </Route>
             </Routes>
-            <Footer/>
+            {!isAdminRoute && <Footer/>}
         </>
     )
 }

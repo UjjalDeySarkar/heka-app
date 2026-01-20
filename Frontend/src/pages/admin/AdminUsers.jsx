@@ -10,9 +10,18 @@ const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('ALL');
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  // Reset pagination when search/filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterType]);
 
   /* ---------------- FETCH USERS ---------------- */
 
@@ -56,6 +65,19 @@ const AdminUsers = () => {
 
     return matchesSearch && matchesType;
   });
+
+  /* ---------------- PAGINATION ---------------- */
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   /* ---------------- HELPERS ---------------- */
 
@@ -159,61 +181,124 @@ const AdminUsers = () => {
             <p className="text-sm">Try adjusting your search or filters.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">User</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Contact Info</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Role</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
-                  <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
-                </tr>
-              </thead>
+          <>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">User</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Contact Info</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Role</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
+                    <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
+                  </tr>
+                </thead>
 
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#4B9B6E] to-[#3d825b] flex items-center justify-center text-white font-bold shadow-sm">
-                            {getInitials(user.name)}
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {currentItems.map((user) => (
+                    <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#4B9B6E] to-[#3d825b] flex items-center justify-center text-white font-bold shadow-sm">
+                              {getInitials(user.name)}
+                            </div>
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-semibold text-gray-900">{user.name}</div>
+                            <div className="text-xs text-gray-500">ID: #{user.id}</div>
                           </div>
                         </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-semibold text-gray-900">{user.name}</div>
-                          <div className="text-xs text-gray-500">ID: #{user.id}</div>
-                        </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {user.email}
-                    </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {user.email}
+                      </td>
 
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getUserTypeColor(user.userType)}`}>
-                        {user.userType}
-                      </span>
-                    </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getUserTypeColor(user.userType)}`}>
+                          {user.userType}
+                        </span>
+                      </td>
 
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-100">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                        Active
-                      </span>
-                    </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                          Active
+                        </span>
+                      </td>
 
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="text-[#4B9B6E] hover:text-[#3d825b] mr-3 transition-colors">Edit</button>
-                      <button className="text-red-400 hover:text-red-600 transition-colors">Delete</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button className="text-[#4B9B6E] hover:text-[#3d825b] mr-3 transition-colors">Edit</button>
+                        <button className="text-red-400 hover:text-red-600 transition-colors">Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+              <div className="text-sm text-gray-500">
+                Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to <span className="font-medium">{Math.min(indexOfLastItem, filteredUsers.length)}</span> of <span className="font-medium">{filteredUsers.length}</span> results
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={`px-3 py-1 border border-gray-300 rounded-md text-sm transition-colors ${
+                    currentPage === 1 
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                      : 'bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  Previous
+                </button>
+                
+                {/* Page Numbers */}
+                <div className="hidden sm:flex gap-1">
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    let startPage = Math.max(1, currentPage - 2);
+                    let endPage = Math.min(totalPages, startPage + 4);
+                    
+                    if (endPage - startPage < 4) {
+                      startPage = Math.max(1, endPage - 4);
+                    }
+
+                    const pageNum = startPage + i;
+                    if (pageNum > totalPages) return null;
+
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => handlePageChange(pageNum)}
+                        className={`px-3 py-1 border rounded-md text-sm transition-colors ${
+                          currentPage === pageNum
+                            ? 'bg-[#4B9B6E] text-white border-[#4B9B6E]'
+                            : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button 
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className={`px-3 py-1 border border-gray-300 rounded-md text-sm transition-colors ${
+                    currentPage === totalPages 
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                      : 'bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>
