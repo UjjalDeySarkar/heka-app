@@ -5,10 +5,7 @@ import com.rfheka.rfheka.dto.StudentRegistrationRequest;
 import com.rfheka.rfheka.dto.StudentResponseDto;
 import com.rfheka.rfheka.dto.WorkExperienceDto;
 import com.rfheka.rfheka.entity.*;
-import com.rfheka.rfheka.repository.StudentEducationRepository;
-import com.rfheka.rfheka.repository.StudentProfileRepository;
-import com.rfheka.rfheka.repository.StudentWorkExperienceRepository;
-import com.rfheka.rfheka.repository.UserRepository;
+import com.rfheka.rfheka.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +22,7 @@ public class StudentService {
     private final StudentEducationRepository educationRepository;
     private final StudentWorkExperienceRepository workRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final CoachingCourseRepository coachingCourseRepository;
 
     private static final String DEFAULT_PASSWORD = "Student@2026";
 
@@ -53,10 +51,14 @@ public class StudentService {
             throw new RuntimeException("Student profile already exists for this user");
         }
 
+        CoachingCourse course = coachingCourseRepository.findById(req.getCoachingCourseId())
+                .orElseThrow(() -> new RuntimeException("Invalid coaching course selected"));
+
         // 4️⃣ Create student profile
         StudentProfile profile = studentProfileRepository.save(
                 StudentProfile.builder()
                         .user(user)
+                        .coachingCourse(course)
                         .courseType(req.getCourseType())
                         .dateOfBirth(req.getDateOfBirth())
                         .gender(req.getGender())
@@ -107,51 +109,62 @@ public class StudentService {
 
         return studentProfileRepository.findAll()
                 .stream()
-                .map(profile -> StudentResponseDto.builder()
-                        .userId(profile.getUser().getId())
-                        .fullName(profile.getUser().getName())
-                        .email(profile.getUser().getEmail())
-                        .userType(profile.getUser().getUserType().name())
+                .map(profile -> {
 
-                        .courseType(profile.getCourseType().name())
-                        .dateOfBirth(profile.getDateOfBirth())
-                        .gender(profile.getGender())
-                        .fatherOrMotherName(profile.getFatherOrMotherName())
+                    CoachingCourse course = profile.getCoachingCourse();
+                    CoachingCenter center =
+                            (course != null) ? course.getCoachingCenter() : null;
 
-                        .phoneNumber(profile.getPhoneNumber())
-                        .alternatePhoneNumber(profile.getAlternatePhoneNumber())
-                        .aadharNumber(profile.getAadharNumber())
-                        .permanentAddress(profile.getPermanentAddress())
+                    return StudentResponseDto.builder()
+                            .userId(profile.getUser().getId())
+                            .fullName(profile.getUser().getName())
+                            .email(profile.getUser().getEmail())
+                            .userType(profile.getUser().getUserType().name())
 
-                        .educations(
+                            // ✅ coaching course (NULL SAFE)
+                            .coachingCourseId(course != null ? course.getId() : null)
+                            .courseType(course != null ? course.getCourseType().name() : null)
+                            .courseFee(course != null ? course.getCourseFee() : null)
 
-                                profile.getEducations().stream()
-                                        .map(e -> {
-                                            EducationDto dto = new EducationDto();
-                                            dto.setDegreeOrClass(e.getDegreeOrClass());
-                                            dto.setInstitute(e.getInstitute());
-                                            dto.setBoardOrUniversity(e.getBoardOrUniversity());
-                                            dto.setPassingYear(e.getPassingYear());
-                                            dto.setMarksOrGrade(e.getMarksOrGrade());
-                                            dto.setStream(e.getStream());
-                                            return dto;
-                                        }).toList()
-                        )
+                            // ✅ coaching center (NULL SAFE)
+                            .coachingCenterId(center != null ? center.getId() : null)
+                            .coachingCenterName(center != null ? center.getName() : null)
 
-                        .workExperiences(
-                                profile.getWorkExperiences().stream()
-                                        .map(w -> {
-                                            WorkExperienceDto dto = new WorkExperienceDto();
-                                            dto.setCompanyName(w.getCompanyName());
-                                            dto.setDesignation(w.getDesignation());
-                                            dto.setReportingPerson(w.getReportingPerson());
-                                            dto.setReportingContact(w.getReportingContact());
-                                            dto.setJobResponsibilities(w.getJobResponsibilities());
-                                            return dto;
-                                        }).toList()
-                        )
-                        .build()
-                )
+                            .dateOfBirth(profile.getDateOfBirth())
+                            .gender(profile.getGender())
+                            .fatherOrMotherName(profile.getFatherOrMotherName())
+                            .phoneNumber(profile.getPhoneNumber())
+                            .alternatePhoneNumber(profile.getAlternatePhoneNumber())
+                            .aadharNumber(profile.getAadharNumber())
+                            .permanentAddress(profile.getPermanentAddress())
+
+                            .educations(
+                                    profile.getEducations().stream()
+                                            .map(e -> {
+                                                EducationDto dto = new EducationDto();
+                                                dto.setDegreeOrClass(e.getDegreeOrClass());
+                                                dto.setInstitute(e.getInstitute());
+                                                dto.setBoardOrUniversity(e.getBoardOrUniversity());
+                                                dto.setPassingYear(e.getPassingYear());
+                                                dto.setMarksOrGrade(e.getMarksOrGrade());
+                                                dto.setStream(e.getStream());
+                                                return dto;
+                                            }).toList()
+                            )
+                            .workExperiences(
+                                    profile.getWorkExperiences().stream()
+                                            .map(w -> {
+                                                WorkExperienceDto dto = new WorkExperienceDto();
+                                                dto.setCompanyName(w.getCompanyName());
+                                                dto.setDesignation(w.getDesignation());
+                                                dto.setReportingPerson(w.getReportingPerson());
+                                                dto.setReportingContact(w.getReportingContact());
+                                                dto.setJobResponsibilities(w.getJobResponsibilities());
+                                                return dto;
+                                            }).toList()
+                            )
+                            .build();
+                })
                 .toList();
     }
 

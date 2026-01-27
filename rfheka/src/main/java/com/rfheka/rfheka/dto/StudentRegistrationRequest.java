@@ -13,7 +13,7 @@ public class StudentRegistrationRequest {
     private String email;
 
     private CourseType courseType;
-
+    private Long coachingCourseId;
     private LocalDate dateOfBirth;
     private String gender;
     private String fatherOrMotherName;

@@ -3,50 +3,30 @@ import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import allopathy from "../assets/Allopathy.png";
-import homeopathy from "../assets/Homeopathy.png";
-import ayurvedic from "../assets/Ayurvedic.png";
-import moreThan from "../assets/moreThan.png"
-import roundArrow from "../assets/roundarrow.png"
+import roundArrow from "../assets/roundarrow.png";
+import ic3 from "../assets/nurse-female.png";  // Use appropriate icons
+import ic2 from "../assets/nurse-male.png";    // Use appropriate icons
 
-import ic1 from "../assets/heartrate.png"
-import ic2 from "../assets/nurse-male.png"
-import ic3 from "../assets/nurse-female.png"
-
+// ✅ Only 2 courses now
 const services = [
-    { title: "Nursing Asst.", sub: "Female", image: ic3, route: "/choose-city/hospitals" },
-    { title: "Nursing Asst.", sub: "Male", image: ic2, route: "/choose-city/hotels" },
-    { title: "Health", sub: "Technician", image: ic1, route: "/choose-city/rooms" },
-
+    { title: "Assistant", sub: "Nursing", image: ic3, route: "/admission-form" },
+    { title: "Midwifery", sub: "Course", image: ic2, route: "/admission-form" },
 ];
-
-const categories = [
-    { title: "Allopathy", icon: allopathy },
-    { title: "Homeopathy", icon: homeopathy },
-    { title: "Ayurvedic", icon: ayurvedic },
-];
-
-
 
 export default function JoinUs() {
-    const [selectedCategory, setSelectedCategory] = useState("Allopathy");
-    const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
-
-    const filteredServices = services;
 
     const handleCardClick = (c) => {
         const serviceLabel = `${c.title} ${c.sub}`;
-        // navigate with both state and query param so AdmissionForm can pick it up reliably
         navigate(`/admission-form?service=${encodeURIComponent(serviceLabel)}`, {
             state: { selectedService: serviceLabel },
         });
     };
 
     useEffect(() => {
-        AOS.init({})
-        AOS.refresh()
-    }, [])
+        AOS.init({});
+        AOS.refresh();
+    }, []);
 
     return (
         <div className="font-dmsans w-full bg-white flex flex-col gap-20 items-center p-4 rounded-[24px] mb-28">
@@ -56,19 +36,18 @@ export default function JoinUs() {
                         <h1 className="text-[34px] font-semibold text-[#4B9B6E] tracking-tighter">To Join Us</h1>
                         <img src={roundArrow} alt="" className="h-[36px] w-[36px]" />
                     </div>
-                    {/* <p className="text-[#4B9B6E] text-xs leading-[15px] max-w-[170px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p> */}
                 </div>
 
-                <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-x-6 px-1 gap-y-5 w-full">
+                {/* ✅ Updated grid for 2 items - centered */}
+                <div className="grid grid-cols-2 gap-x-6 px-4 gap-y-5 w-full max-w-[300px] mx-auto">
                     {services.map((item, index) => (
-                        // changed: use a button-like div and onClick to navigate to the demo admission form
                         <button
                             type="button"
                             key={index}
                             onClick={() => handleCardClick(item)}
                             className="flex flex-col gap-2 items-center text-center focus:outline-none active:scale-95 transition-transform duration-150 bg-transparent"
                         >
-                            <div className="bg-[#93D8B1] p-2 rounded-[12px]">
+                            <div className="bg-[#93D8B1] p-3 rounded-[12px]">
                                 <img
                                     src={item.image}
                                     alt={item.title}
@@ -86,4 +65,3 @@ export default function JoinUs() {
         </div>
     );
 }
-

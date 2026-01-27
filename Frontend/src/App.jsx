@@ -1,4 +1,5 @@
 import React from "react"
+import ScrollToTop from "./components/ScrollToTop"; 
 import { Routes, Route, useLocation } from "react-router-dom"
 import Home from "./pages/Home"
 import ChooseCity from "./pages/ChooseCity"
@@ -41,6 +42,7 @@ function App() {
 // localStorage.removeItem("preloaderShown")
     return (
         <>
+            <ScrollToTop />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/choose-city/:service" element={<ChooseCity />} />

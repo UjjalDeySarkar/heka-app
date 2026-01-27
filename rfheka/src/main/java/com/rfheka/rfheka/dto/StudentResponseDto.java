@@ -17,6 +17,14 @@ public class StudentResponseDto {
     private String email;
     private String userType;
 
+    // Course details
+    private Long coachingCourseId;
+    private Double courseFee;
+
+    // Coaching center details
+    private Long coachingCenterId;
+    private String coachingCenterName;
+
     private String courseType;
     private LocalDate dateOfBirth;
     private String gender;

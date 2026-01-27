@@ -56,5 +56,10 @@ public class StudentProfile {
             orphanRemoval = true
     )
     private Set<StudentWorkExperience> workExperiences = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "coaching_course_id", nullable = true)
+    private CoachingCourse coachingCourse;
+
 }
 

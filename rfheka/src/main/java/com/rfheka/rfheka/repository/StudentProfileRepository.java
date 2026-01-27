@@ -13,7 +13,9 @@ public interface StudentProfileRepository extends JpaRepository<StudentProfile, 
     @EntityGraph(attributePaths = {
             "user",
             "educations",
-            "workExperiences"
+            "workExperiences",
+            "coachingCourse",
+            "coachingCourse.coachingCenter",
     })
     List<StudentProfile> findAll();
 }
