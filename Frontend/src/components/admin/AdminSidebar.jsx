@@ -8,6 +8,7 @@ const AdminSidebar = () => {
   const menuItems = [
     { name: 'Dashboard', path: '/admin' },
     { name: 'Users', path: '/admin/users' },
+    { name: 'Students', path: '/admin/students' },
     { name: 'Hospitals', path: '/admin/hospitals' },
     { name: 'Services', path: '/admin/services' },
     { name: 'Settings', path: '/admin/settings' },

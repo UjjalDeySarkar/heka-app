@@ -22,6 +22,12 @@ const courseTypeMap = {
   "Midwifery Course": "MIDWIFERY",
 };
 
+// ✅ Hardcoded coachingCourseId mapping
+const coachingCourseIdMap = {
+  "uchhal_prabaha": 1,
+  "rcs_canning": 2,
+};
+
 const buildPayload = (form) => {
   const selectedCenter = coachingCenters.find(c => c.id === form.coachingCenter);
   
@@ -38,6 +44,9 @@ const buildPayload = (form) => {
     alternatePhoneNumber: form.altPhone,
     aadharNumber: form.aadhar,
     permanentAddress: form.permanentAddress,
+
+    // ✅ Hardcoded coachingCourseId based on selected center
+    coachingCourseId: coachingCourseIdMap[form.coachingCenter],
 
     educations: form.education.map((e) => ({
       degreeOrClass: e.className,
@@ -130,6 +139,9 @@ export default function AdmissionForm() {
     }
 
     const payload = buildPayload(form);
+    
+    // ✅ Log payload for debugging
+    console.log("Submitting payload:", payload);
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/students/register`, {

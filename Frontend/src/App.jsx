@@ -34,7 +34,7 @@ import AdminUsers from "./pages/admin/AdminUsers"
 import AdminHospitals from "./pages/admin/AdminHospitals"
 import AdminServices from "./pages/admin/AdminServices"
 import AdminSettings from "./pages/admin/AdminSettings"
-
+import AdminStudents from "./pages/admin/AdminStudents"
 function App() {
     const location = useLocation();
     const isAdminRoute = location.pathname.startsWith('/admin');
@@ -76,6 +76,7 @@ function App() {
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
                     <Route path="users" element={<AdminUsers />} />
+                    <Route path="students" element={<AdminStudents />} />
                     <Route path="hospitals" element={<AdminHospitals />} />
                     <Route path="services" element={<AdminServices />} />
                     <Route path="settings" element={<AdminSettings />} />
